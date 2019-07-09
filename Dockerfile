@@ -12,4 +12,4 @@ FROM openjdk:8-jre
 CMD exec java $JAVA_OPTS -jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
 
 # Add the service itself
-COPY --from=target /build/target/neoload-web-test-launcher*.jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
+COPY --from=target /build/target/neoload-web-test-launcher-docker-?.?.?.jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
