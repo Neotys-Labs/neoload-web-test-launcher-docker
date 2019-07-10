@@ -8,6 +8,7 @@ import io.swagger.client.model.ProjectDefinition;
 import io.swagger.client.model.RunTestDefinition;
 
 import java.io.File;
+import java.net.*;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -15,13 +16,14 @@ public class Launcher {
 
     static final String PROJECT_FOLDER = "/neoload-project";
 
-    static final String ENV_TOKEN = "neoload-token";
-    static final String ENV_CONTROLLER_ZONE = "neoload-controller-zoneid";
-    static final String ENV_LG_ZONES = "neoload-lg-zonesids";
-    static final String ENV_TEST_NAME = "neoload-test-name";
-    static final String ENV_SCENARIO_NAME = "neoload-scenario-name";
-    static final String ENV_API_URL = "neoload-api-url";
-    static final String ENV_FILES_API_URL = "neoload-files-url";
+    static final String ENV_TOKEN = "NEOLOADWEB_TOKEN";
+    static final String ENV_CONTROLLER_ZONE = "CONTROLLER_ZONE_ID";
+    static final String ENV_LG_ZONES = "LG_ZONE_IDS";
+    static final String ENV_TEST_NAME = "TEST_NAME";
+    static final String ENV_SCENARIO_NAME = "SCENARIO_NAME";
+    static final String ENV_API_URL = "NEOLOADWEB_API_URL";
+    static final String ENV_FILES_API_URL = "NEOLOADWEB_FILES_API_URL";
+    static final String ENV_PROXY = "NEOLOADWEB_PROXY";
 
 
     @VisibleForTesting
@@ -89,6 +91,10 @@ public class Launcher {
 
         try {
             runtimeApi.getApiClient().setBasePath(getNlwebFilesApiURL());
+
+            Proxy proxy = getProxy(System.getenv(ENV_PROXY));
+            if(proxy!=null) runtimeApi.getApiClient().getHttpClient().setProxy(proxy);
+
             ProjectDefinition projectDefinition = runtimeApi.postUploadProject(new File(PROJECT_FOLDER + File.separator + projectFile));
             String scenarioName = getScenarioName(projectDefinition);
             if(scenarioName==null) {
@@ -126,6 +132,35 @@ public class Launcher {
 
         launchTest(projectFile, runtimeApi);
 
+    }
+
+    static Proxy getProxy(final String proxyUrl) {
+        if(proxyUrl==null) return null;
+
+        Proxy proxy;
+        try {
+            URL address = new URL(proxyUrl);
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(address.getHost(), address.getPort()));
+            String userInfo = address.getUserInfo();
+            if(userInfo!=null && userInfo.contains(":")) {
+                final String login = userInfo.substring(0, userInfo.indexOf(":"));
+                final String password = userInfo.substring(userInfo.indexOf(":"));
+                Authenticator.setDefault(
+                        new Authenticator() {
+                            @Override
+                            public PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(
+                                        login, password.toCharArray());
+                            }
+                        }
+                );
+            }
+        }catch (Exception e) {
+            System.out.println("Invalid proxy url, no proxy will be used");
+            e.printStackTrace(System.err);
+            return null;
+        }
+        return proxy;
     }
 
 

@@ -14,6 +14,9 @@ import static  org.mockito.Mockito.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -146,6 +149,16 @@ public class LauncherTest {
         setEnv(Launcher.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launcher.ENV_LG_ZONES, "something");
         Launcher.validateEnvParameters();
+    }
+
+    @Test
+    public void getProxyTest() {
+        Assertions.assertThat(Launcher.getProxy(null)).isNull();
+        Proxy proxy1 = Launcher.getProxy("http://myhost:8080");
+        Assertions.assertThat(proxy1).isNotNull();
+        Assertions.assertThat(proxy1.type()).isEqualTo(Proxy.Type.HTTP);
+        Assertions.assertThat(((InetSocketAddress)proxy1.address()).getHostName()).isEqualTo("myhost");
+        Assertions.assertThat(((InetSocketAddress)proxy1.address()).getPort()).isEqualTo(8080);
     }
 
     @Test
