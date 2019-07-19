@@ -7,7 +7,7 @@ COPY src/ /build/src/
 RUN mvn package
 
 # Step : Package image
-FROM openjdk:8-jre
+FROM openjdk:11-jre
 
 CMD exec java $JAVA_OPTS -jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
 
