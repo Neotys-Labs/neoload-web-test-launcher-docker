@@ -8,7 +8,21 @@ start a test using the NeoLoad project stored in the */neoload-project* folder.
 
 Usage
 =====
+### Using a volume mapping
     docker run -d --rm \
+            -v /localpath/myProject:/neoload-project
+            -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
+            -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
+            -e NEOLOADWEB_TOKEN={nlweb-token} \
+            -e TEST_NAME={test-name} \
+            -e SCENARIO_NAME={scenario-name} \
+            -e CONTROLLER_ZONE_ID={controller-zone} \
+            -e LG_ZONE_IDS={lg-zones:lg-number} \
+            neotys/neoload-web-test-launcher
+            
+### Using project URL
+    docker run -d --rm \
+            -e NEOLOAD_PROJECT_URL={url-to-project-zip}
             -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
             -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
             -e NEOLOADWEB_TOKEN={nlweb-token} \

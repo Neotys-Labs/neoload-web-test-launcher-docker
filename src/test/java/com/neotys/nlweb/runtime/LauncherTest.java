@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -24,15 +25,26 @@ import java.util.Map;
 public class LauncherTest {
 
     @Test
-    public void getProjectFileNameWithNLPTest() throws IOException {
-        File nlpFile = File.createTempFile("test",".zip");
+    public void getProjectFileNameWithNLPTest() {
+
+    }
+
+    @Test
+    public void getProjectFileNameWithZipTest() throws IOException {
+        Path tempDir = java.nio.file.Files.createTempDirectory("nlwebtestlaunchertests");
+        tempDir.toFile().deleteOnExit();
+        File nlpFile = tempDir.resolve("test.nlp").toFile();
+        nlpFile.createNewFile();
         nlpFile.deleteOnExit();
-        Assertions.assertThat(Launcher.getProjectFileName(nlpFile.getParentFile().getAbsolutePath())).matches("test\\d+\\.zip");
-        File nlpFile2 = File.createTempFile("test2",".zip");
+        Assertions.assertThat(Launcher.getProjectFileName(nlpFile.getParentFile().getAbsolutePath())).isEqualTo(tempDir.toFile().getAbsolutePath()+File.separator+"project.zip");
+        Assertions.assertThat(tempDir.resolve("project.zip").toFile()).exists();
+        File nlpFile2 = tempDir.resolve("test2.nlp").toFile();
+        nlpFile2.createNewFile();
         nlpFile2.deleteOnExit();
         Assertions.assertThat(Launcher.getProjectFileName(nlpFile.getParentFile().getAbsolutePath())).isNull();
         nlpFile.delete();
         nlpFile2.delete();
+        tempDir.toFile().delete();
     }
 
     @Test
@@ -209,6 +221,20 @@ public class LauncherTest {
                 0,
                 "something",
                 "something");
+
+    }
+
+    @Test
+    public void getProjectUrlExtensionTest() {
+        Assertions.assertThat(Launcher.getProjectUrlExtension(null)).isEmpty();
+        Assertions.assertThat(Launcher.getProjectUrlExtension("http://myserver")).isEmpty();
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain")).isEmpty();
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain/myproject")).isEmpty();
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain/myproject.")).isEmpty();
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain/myproject.zip").get()).isEqualTo("zip");
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain/myproject.yaml").get()).isEqualTo("yaml");
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain/myproject.yml").get()).isEqualTo("yml");
+        Assertions.assertThat(Launcher.getProjectUrlExtension("https://myserver.mydomain:8090/path/myproject.yml").get()).isEqualTo("yml");
 
     }
 
