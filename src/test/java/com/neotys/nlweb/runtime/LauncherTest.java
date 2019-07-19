@@ -207,7 +207,7 @@ public class LauncherTest {
 
         verify(apiClient).setApiKey("myToken");
         verify(apiClient).setBasePath("https://neoload-files.saas.neotys.com/v1");
-        verify(apiClient).setBasePath("https://neoload-api.saas.neotys.com/v1");
+        verify(apiClient, times(2)).setBasePath("https://neoload-api.saas.neotys.com/v1");
 
         verify(runtimeApi).postUploadProject(new File(Launcher.PROJECT_FOLDER + File.separator + "my-project"));
         verify(runtimeApi).getTestsRun("myTest",
