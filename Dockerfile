@@ -1,5 +1,5 @@
 # Step : Test and package
-FROM maven:3.6-jdk-11-alpine as target
+FROM maven:3.6-jdk-11 as target
 WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline
