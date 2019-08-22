@@ -28,6 +28,7 @@ import java.util.Optional;
 
 public class Launcher {
 
+
     static final String PROJECT_FOLDER = "/neoload-project";
     static final String RESULT_FOLDER = "/neoload-result";
 
@@ -39,6 +40,28 @@ public class Launcher {
     static final String ENV_API_URL = "NEOLOADWEB_API_URL";
     static final String ENV_FILES_API_URL = "NEOLOADWEB_FILES_API_URL";
     static final String ENV_PROXY = "NEOLOADWEB_PROXY";
+
+    public static void main(String[] args) {
+
+        try {
+            String projectFile = getProjectFileName(PROJECT_FOLDER);
+            if (projectFile == null) {
+                throw new IllegalArgumentException("Project folder does not contain a NeoLoad project or YAML file");
+            }
+
+            RuntimeApi runtimeApi = new RuntimeApi();
+
+            String testId = launchTest(projectFile, runtimeApi);
+            if (testId != null) {
+                ResultsApi resultsApi = new ResultsApi();
+                waitForTestFinished(testId, resultsApi);
+            }
+        }catch (Throwable e) {
+            // For all uncaught exception, just fail, an error message should already be logged
+            System.exit(1);
+        }
+
+    }
 
 
     @VisibleForTesting
@@ -162,9 +185,13 @@ public class Launcher {
                     System.out.println("Test status: "+testDefinition.getStatus());
                 }
                 if(testDefinition.getStatus()== TestDefinition.StatusEnum.RUNNING) System.out.print(".");
-            } while (testDefinition.getStatus() != TestDefinition.StatusEnum.TERMINATED);
+            } while (testDefinition.getStatus() != TestDefinition.StatusEnum.TERMINATED && testDefinition.getQualityStatus()!= TestDefinition.QualityStatusEnum.COMPUTING);
             System.out.println();
-            System.out.println("Test finished");
+            if(testDefinition.getQualityStatus()!= TestDefinition.QualityStatusEnum.PASSED) {
+                System.out.println("Test finished with a failure status:"+testDefinition.getQualityStatus());
+                System.exit(1);
+            }
+            System.out.println("Test finished successfully");
         }catch(InterruptedException | ApiException e) {
             System.err.println("Error during polling test result");
             if(e.getMessage().equalsIgnoreCase("not found")) {
@@ -197,23 +224,6 @@ public class Launcher {
 
         Proxy proxy = getProxy(System.getenv(ENV_PROXY));
         if (proxy != null) apiClient.getHttpClient().setProxy(proxy);
-    }
-
-    public static void main(String[] args) {
-
-        String projectFile = getProjectFileName(PROJECT_FOLDER);
-        if(projectFile==null) {
-            throw new IllegalArgumentException("Project folder does not contain a NeoLoad project or YAML file");
-        }
-
-        RuntimeApi runtimeApi = new RuntimeApi();
-
-        String testId = launchTest(projectFile, runtimeApi);
-        if(testId!=null) {
-            ResultsApi resultsApi = new ResultsApi();
-            waitForTestFinished(testId, resultsApi);
-        }
-
     }
 
     static Proxy getProxy(final String proxyUrl) {
