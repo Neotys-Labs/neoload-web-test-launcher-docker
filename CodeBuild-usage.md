@@ -1,9 +1,9 @@
 ## How to use this image to run NeoLoad test in your CodeBuild pipeline
 
 AWS CodeBuild is a fully managed continuous integration service that compiles source code, runs tests, and produces software packages that are ready to deploy. More information on  [CodeBuild](https://aws.amazon.com/codebuild/).
-CodeBuild are configured using a YAML file called `.gitlab-ci.yml` within each project.
-Using GitLab pipeline, you can easily run a Docker image. 
-Since this image returns a non zero exit code when the test launched is failed, you can integrate a load test directly in your pipeline by running this docker image, bellow is an example of a minimalist `.gitlab-ci.yml` file starting a NeoLoad load test:
+CodeBuild are configured using a YAML file called `buildspec.yml` within each project.
+Using CodeBuild, you can easily run a Docker image. 
+Since this image returns a non zero exit code when the test launched is failed, you can integrate a load test directly in your pipeline by running this docker image, bellow is an example of a minimalist `buildspec.yml` file starting a NeoLoad load test:
 ```
 stages:
  - test
@@ -37,5 +37,5 @@ loadtest:
 This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE1NjUxNDcwNV19
+eyJoaXN0b3J5IjpbLTI4OTUxNDE1XX0=
 -->
