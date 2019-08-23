@@ -22,17 +22,19 @@ loadtest:
    - >
      docker run --rm 
      -v "$(pwd)/neoload-project/archive":/neoload-project 
- -e SCENARIO_NAME=smoke-test
- -e NEOLOADWEB_TOKEN=<your API>
- -e TEST_NAME=CI-smoke 
- -e CONTROLLER_ZONE_ID=<Your ZoneID> 
- -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
- neotys/neoload-web-test-launcher:latest
+     -e SCENARIO_NAME=smoke-test
+     -e NEOLOADWEB_TOKEN=<your API>
+     -e TEST_NAME=CI-smoke 
+     -e CONTROLLER_ZONE_ID=<Your ZoneID> 
+     -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
+     neotys/neoload-web-test-launcher:latest
  except:
  variables:
  - $PERFORMANCE_DISABLED
 
 ```
+This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
+If your NeoLoad project is not stored in your GitLa
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDcwMzAyMzA3XX0=
+eyJoaXN0b3J5IjpbLTIxMjI4MTE1NzddfQ==
 -->
