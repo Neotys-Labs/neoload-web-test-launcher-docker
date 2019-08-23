@@ -27,15 +27,15 @@ phases:
         docker run --rm 
         -e NEOLOAD_PROJECT_URL=https://github.com/myProfile/myProject/blob/master/neoload-project/Archive/smokeTest.zip?raw=true
         -e SCENARIO_NAME=smoke-test 
-        -e NEOLOADWEB_TOKEN=<myToken> 
+        -e NEOLOADWEB_TOKEN=<Your Token> 
         -e TEST_NAME=CI-smoke 
-        -e CONTROLLER_ZONE_ID=afRmU 
-        -e LG_ZONE_IDS=afRmU:1 
+        -e CONTROLLER_ZONE_ID=<Your ZoneID> 
+        -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
         neotys/neoload-web-test-launcher:latest
 
 ```
 This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgzMDA1MTgzMF19
+eyJoaXN0b3J5IjpbMjM0NTU5MzM4XX0=
 -->
