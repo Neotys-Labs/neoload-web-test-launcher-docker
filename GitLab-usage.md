@@ -29,12 +29,12 @@ loadtest:
      -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
      neotys/neoload-web-test-launcher:latest
  except:
- variables:
- - $PERFORMANCE_DISABLED
+   variables:
+     - $PERFORMANCE_DISABLED
 
 ```
 This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MzY3NTc4MTRdfQ==
+eyJoaXN0b3J5IjpbMTk2MzM0MDA0Ml19
 -->
