@@ -2,7 +2,7 @@
 
 GitLab CI/CD [pipelines](https://docs.gitlab.com/ee/ci/pipelines.html) are configured using a YAML file called `.gitlab-ci.yml` within each project.
 Using GitLab pipeline, you can easily run a Docker image. 
-Since this image returns a non zero exit code when the test launched is failed, you can integrate a load test directly in your pipeline by running this docker image, for example:
+Since this image returns a non zero exit code when the test launched is failed, you can integrate a load test directly in your pipeline by running this docker image, bellow is an example of a minimalist `.gitlab-ci.yml` file starting a NeoLoad load test:
 ```
 stages:
  - test
@@ -36,5 +36,5 @@ loadtest:
 This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMzM2NzYxODFdfQ==
+eyJoaXN0b3J5IjpbLTE3MzY3NTc4MTRdfQ==
 -->
