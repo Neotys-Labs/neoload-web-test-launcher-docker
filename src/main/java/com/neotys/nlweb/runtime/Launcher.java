@@ -46,6 +46,8 @@ public class Launcher {
     public static void main(String[] args) {
 
         try {
+            getProjectUrl().ifPresent(url -> downloadFile(url));
+
             String projectFile = getProjectFileName(PROJECT_FOLDER);
             if (projectFile == null) {
                 throw new IllegalArgumentException("Project folder does not contain a NeoLoad project or YAML file");
@@ -138,8 +140,6 @@ public class Launcher {
         setupClientApi(runtimeApi.getApiClient());
 
         try {
-
-            getProjectUrl().ifPresent(url -> downloadFile(url));
 
             runtimeApi.getApiClient().setBasePath(getNlwebFilesApiURL());
 
@@ -328,6 +328,7 @@ public class Launcher {
     }
 
     static Path downloadFile(String url) {
+        System.out.println("Downloading project file from: "+url);
         try {
             HttpClient client = HttpClient.newBuilder()
                     .followRedirects(HttpClient.Redirect.ALWAYS)
@@ -347,6 +348,7 @@ public class Launcher {
             HttpResponse<Path> response = client.send(request, HttpResponse.BodyHandlers.ofFile(projectFile));
 
             if(response.statusCode()==200) {
+                System.out.println("Project file downloaded and stored in "+projectFile.toString());
                 return projectFile;
             } else {
                 System.err.println(response.statusCode());
