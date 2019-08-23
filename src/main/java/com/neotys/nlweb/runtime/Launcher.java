@@ -30,7 +30,7 @@ import java.util.Optional;
 public class Launcher {
 
 
-    static final String PROJECT_FOLDER = "/neoload-project";
+    static final String PROJECT_FOLDER = "//neoload-project";
     static final String RESULT_FOLDER = "/neoload-result";
 
     static final String ENV_TOKEN = "NEOLOADWEB_TOKEN";
@@ -342,8 +342,8 @@ public class Launcher {
 
             final String extension = getProjectUrlExtension(url).orElse("zip");
 
-            Files.createDirectory(Paths.get(PROJECT_FOLDER), null);
-            Path projectFile = Files.createFile(Paths.get(PROJECT_FOLDER, "project."+getProjectUrlExtension(url).orElse("zip")), null);
+            Files.createDirectory(Paths.get(PROJECT_FOLDER));
+            Path projectFile = Files.createFile(Paths.get(PROJECT_FOLDER, "project."+getProjectUrlExtension(url).orElse("zip")));
 
             HttpResponse<Path> response = client.send(request, HttpResponse.BodyHandlers.ofFile(projectFile));
 
