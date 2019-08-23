@@ -45,7 +45,8 @@ Usage
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
 
 ### Use this image in a CI environment
-[Use this image in GitLab CI](GitLab-usage.md)
+- [Use this image in **GitLab CI**](GitLab-usage.md)
+- [Use this image in **AWS CodeBuild**](CodeBuild-usage.md)
 
 License
 ---------
