@@ -34,8 +34,7 @@ phases:
         neotys/neoload-web-test-launcher:latest
 
 ```
-This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
-If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
+> **Note:** This example uses a NeoLoad project stored in a GitHub repository in the "neoload-project/Archive" folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjM0NTU5MzM4XX0=
+eyJoaXN0b3J5IjpbMTY4MzA5NjM5M119
 -->
