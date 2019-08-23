@@ -33,8 +33,8 @@ loadtest:
      - $PERFORMANCE_DISABLED
 
 ```
-This example will use the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
+This example uses the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk2MzM0MDA0Ml19
+eyJoaXN0b3J5IjpbLTE5NjgyNzY1MTUsMTk2MzM0MDA0Ml19
 -->
