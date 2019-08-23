@@ -20,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class Launcher {
     static final String RESULT_FOLDER = "/neoload-result";
 
     static final String ENV_TOKEN = "NEOLOADWEB_TOKEN";
+    static final String ENV_PROJECT_URL = "NEOLOAD_PROJECT_URL";
     static final String ENV_CONTROLLER_ZONE = "CONTROLLER_ZONE_ID";
     static final String ENV_LG_ZONES = "LG_ZONE_IDS";
     static final String ENV_TEST_NAME = "TEST_NAME";
@@ -55,6 +57,9 @@ public class Launcher {
             if (testId != null) {
                 ResultsApi resultsApi = new ResultsApi();
                 waitForTestFinished(testId, resultsApi);
+            } else {
+                // error occurs when launching the test
+                System.exit(1);
             }
         }catch (Throwable e) {
             // For all uncaught exception, just fail, an error message should already be logged
@@ -104,6 +109,11 @@ public class Launcher {
     }
 
     @VisibleForTesting
+    static Optional<String> getProjectUrl() {
+        return Optional.ofNullable(System.getenv(ENV_PROJECT_URL));
+    }
+
+    @VisibleForTesting
     static void validateEnvParameters() {
         if(Strings.isNullOrEmpty(getToken())) {
             System.err.println("Token not defined");
@@ -128,6 +138,9 @@ public class Launcher {
         setupClientApi(runtimeApi.getApiClient());
 
         try {
+
+            getProjectUrl().ifPresent(url -> downloadFile(url));
+
             runtimeApi.getApiClient().setBasePath(getNlwebFilesApiURL());
 
             System.out.println("Uploading project");
@@ -328,12 +341,13 @@ public class Launcher {
 
             final String extension = getProjectUrlExtension(url).orElse("zip");
 
-            Path tempFile = Files.createTempFile("project", extension);
+            Files.createDirectory(Paths.get(PROJECT_FOLDER), null);
+            Path projectFile = Files.createFile(Paths.get(PROJECT_FOLDER, "project."+getProjectUrlExtension(url).orElse("zip")), null);
 
-            HttpResponse<Path> response = client.send(request, HttpResponse.BodyHandlers.ofFile(tempFile));
+            HttpResponse<Path> response = client.send(request, HttpResponse.BodyHandlers.ofFile(projectFile));
 
             if(response.statusCode()==200) {
-                return tempFile;
+                return projectFile;
             } else {
                 System.err.println(response.statusCode());
                 System.err.println(response.body());
