@@ -23,7 +23,7 @@ loadtest:
      docker run --rm 
      -v "$(pwd)/neoload-project/archive":/neoload-project 
      -e SCENARIO_NAME=smoke-test
-     -e NEOLOADWEB_TOKEN=<your API>
+     -e NEOLOADWEB_TOKEN=<Your Token>
      -e TEST_NAME=CI-smoke 
      -e CONTROLLER_ZONE_ID=<Your ZoneID> 
      -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
@@ -36,5 +36,5 @@ loadtest:
 This example uses the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NjgyNzY1MTUsMTk2MzM0MDA0Ml19
+eyJoaXN0b3J5IjpbLTEzNDYzNDg0ODJdfQ==
 -->
