@@ -11,33 +11,28 @@ loadtest:
  image: docker:stable
  allow_failure: false
  services:
- - docker:stable-dind
+   - docker:stable-dind
  script:
- - |
- if ! docker info &>/dev/null; then
- if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
- export DOCKER_HOST='tcp://localhost:2375'
- fi
- fi
- - >
- docker run --rm 
- -v "$(pwd)/neoload-project/archive":/neoload-project 
+   - |
+     if ! docker info &>/dev/null; then
+        if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
+           export DOCKER_HOST='tcp://localhost:2375'
+        fi
+     fi
+   - >
+     docker run --rm 
+     -v "$(pwd)/neoload-project/archive":/neoload-project 
  -e SCENARIO_NAME=smoke-test
  -e NEOLOADWEB_TOKEN=<your API>
  -e TEST_NAME=CI-smoke 
  -e CONTROLLER_ZONE_ID=<Your ZoneID> 
- -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1> 
+ -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
  neotys/neoload-web-test-launcher:latest
-#    - mv sitespeed-results/data/performance.json performance.json
- artifacts:
- paths:
- - performance.json
- - neoload-results/
  except:
  variables:
  - $PERFORMANCE_DISABLED
 
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTA2NzQ1NDM3XX0=
+eyJoaXN0b3J5IjpbNDcwMzAyMzA3XX0=
 -->
