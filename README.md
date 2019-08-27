@@ -35,6 +35,7 @@ Usage
 ### Parameters
 | Env | Comment | Example |
 | ------------------------ | --------------------------------------------- | ---------------- |
+| NEOLOAD_PROJECT_URL (Optional) |  A zipped version of he NeoLoad project to launch. Optional, is only if volume containing the project is not mapped | https://github.com/me/myProject/raw/master/neoload-project/Archive/smokeTest.zip
 | NEOLOADWEB_API_URL (Optional) |  The NeoLoad Web API URL. Optional, is only required for NeoLoad Web OnPremise deployment. If not present, the Controller will use NeoLoad Web SAAS. | https://neoload.mycompany.com:8080 |
 | NEOLOADWEB_FILES_API_URL (Optional) |  The NeoLoad Web Files API URL. Optional, is only required for NeoLoad Web OnPremise deployment. If not present, the Controller will use NeoLoad Web SAAS. | https://neoload.mycompany.com:8080 |
 | NEOLOADWEB_TOKEN | The NeoLoad Web API token. | 9be32780c6ec86d92jk0d1d25c |
