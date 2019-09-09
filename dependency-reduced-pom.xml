@@ -33,7 +33,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.neotys.nlweb.runtime.Launcher</mainClass>
+                  <mainClass>com.neotys.nlweb.runtime.Launch</mainClass>
                 </transformer>
               </transformers>
             </configuration>

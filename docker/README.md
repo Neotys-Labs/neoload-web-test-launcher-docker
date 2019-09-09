@@ -1,21 +1,13 @@
-# Start a NeoLoad Web test using a Container
+What is NeoLoad?
+================
+[NeoLoad](http://www.neotys.com/neoload/overview) is a load testing solution developed by [Neotys](http://www.neotys.com). NeoLoad realistically simulates user activity and monitors infrastructure behavior so you can eliminate bottlenecks in all your web and mobile applications.
+NeoLoad Web allows you to start you load test and analyse the test results from a shared platform.
 
-## Overview
+This image allows you to run NeoLoad tests from NeoLoad Web. This image will connect to NeoLoad Web REST API and 
+start a test using the NeoLoad project stored in the */neoload-project* folder.
 
-Docker container allowing to launch a test with [NeoLoad](https://www.neotys.com/neoload/overview).
-It allows you to interact with the NeoLoad [Runtime API](https://neoload-api.saas.neotys.com/explore/) to launch a load test and wait for the test result.
-
-| Property | Value |
-| ----------------    | ----------------   |
-| Maturity | Experimental |
-| Author | Neotys |
-| License           | [BSD 2-Clause "Simplified"](https://github.com/Neotys-Labs/Worksoft-Certify/blob/master/LICENSE) |
-| NeoLoad Licensing | License FREE edition, or Enterprise edition, or Professional with Integration & Advanced Usage|
-| Supported versions | Tested with NeoLoad from version [6.10.0](https://www.neotys.com/support/download-neoload)
-| Download Binaries | See [docker hub](https://https://hub.docker.com/r/neotys/neoload-web-test-launcher)|
-
-##Usage
-
+Usage
+=====
 ### Using a volume mapping
     docker run -d --rm \
             -v /localpath/myProject:/neoload-project
@@ -43,7 +35,6 @@ It allows you to interact with the NeoLoad [Runtime API](https://neoload-api.saa
 ### Parameters
 | Env | Comment | Example |
 | ------------------------ | --------------------------------------------- | ---------------- |
-| NEOLOAD_PROJECT_URL (Optional) | A zipped version of he NeoLoad project to launch. Optional, a volume containing the project can also be mapped. | https://github.com/me/myProject/raw/master/neoload-project/Archive/smokeTest.zip
 | NEOLOADWEB_API_URL (Optional) |  The NeoLoad Web API URL. Optional, is only required for NeoLoad Web OnPremise deployment. If not present, the Controller will use NeoLoad Web SAAS. | https://neoload.mycompany.com:8080 |
 | NEOLOADWEB_FILES_API_URL (Optional) |  The NeoLoad Web Files API URL. Optional, is only required for NeoLoad Web OnPremise deployment. If not present, the Controller will use NeoLoad Web SAAS. | https://neoload.mycompany.com:8080 |
 | NEOLOADWEB_TOKEN | The NeoLoad Web API token. | 9be32780c6ec86d92jk0d1d25c |
@@ -53,5 +44,13 @@ It allows you to interact with the NeoLoad [Runtime API](https://neoload-api.saa
 | CONTROLLER_ZONE_ID | The controller zone Id. | ZoneId |
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
 
-## ChangeLog
-* Version 1.0.0 (September, 2019): Initial release.
+License
+---------
+NeoLoad is licensed under the following [License Agreement](http://www.neotys.com/documents/legal/eula/neoload/eula_en.html). You must agree to this license agreement to download and use the image.
+
+Note: This license does not permit further distribution.
+
+
+User Feedback
+------------------
+For general issues relating to NeoLoad you can get help from [Neotys Support](https://www.neotys.com/community/?from=%2Faccountarea%2Fcasecreate.php) or [Neotys Community](http://answers.neotys.com/). 
