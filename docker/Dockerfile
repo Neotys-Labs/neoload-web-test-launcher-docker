@@ -1,9 +1,9 @@
 # Step : Test and package
 FROM maven:3.6-jdk-11 as target
 WORKDIR /build
-COPY ../pom.xml .
+COPY pom.xml .
 RUN mvn dependency:go-offline
-COPY ../src /build/src/
+COPY src /build/src/
 RUN mvn package
 
 # Step : Package image
