@@ -44,6 +44,10 @@ Usage
 | CONTROLLER_ZONE_ID | The controller zone Id. | ZoneId |
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
 
+### Use this image in a CI environment
+- [Use this image in **GitLab CI**](https://raw.githubusercontent.com/Neotys-Labs/neoload-web-test-launcher-docker/master/GitLab-usage.md)
+- [Use this image in **AWS CodeBuild**](https://raw.githubusercontent.com/Neotys-Labs/neoload-web-test-launcher-docker/master/CodeBuild-usage.md)
+
 License
 ---------
 NeoLoad is licensed under the following [License Agreement](http://www.neotys.com/documents/legal/eula/neoload/eula_en.html). You must agree to this license agreement to download and use the image.
