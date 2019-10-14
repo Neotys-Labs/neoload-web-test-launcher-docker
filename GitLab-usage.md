@@ -14,12 +14,6 @@ loadtest:
  services:
    - docker:stable-dind
  script:
-   - |
-     if ! docker info &>/dev/null; then
-        if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
-           export DOCKER_HOST='tcp://localhost:2375'
-        fi
-     fi
    - >
      docker run --rm 
      -v "$(pwd)/neoload-project/archive":/neoload-project 
@@ -29,9 +23,6 @@ loadtest:
      -e CONTROLLER_ZONE_ID=<Your ZoneID> 
      -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
      neotys/neoload-web-test-launcher:latest
- except:
-   variables:
-     - $PERFORMANCE_DISABLED
 
 ```
 > **Note:** This example uses the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.

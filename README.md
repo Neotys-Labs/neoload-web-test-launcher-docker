@@ -4,7 +4,9 @@ What is NeoLoad?
 NeoLoad Web allows you to start you load test and analyse the test results from a shared platform.
 
 This image allows you to run NeoLoad tests from NeoLoad Web. This image will connect to NeoLoad Web REST API and 
-start a test using the NeoLoad project stored in the */neoload-project* folder.
+start a test using the NeoLoad project, stored in the */neoload-project* folder, or downloaded from an URL.
+The container will wait until the end of the test and return the test quality status as the return code (0 if the test 
+status is PASSED, 1 otherwise).
 
 Usage
 =====
@@ -46,8 +48,8 @@ Usage
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
 
 ### Use this image in a CI environment
-- [Use this image in **GitLab CI**](https://raw.githubusercontent.com/Neotys-Labs/neoload-web-test-launcher-docker/master/GitLab-usage.md)
-- [Use this image in **AWS CodeBuild**](https://raw.githubusercontent.com/Neotys-Labs/neoload-web-test-launcher-docker/master/CodeBuild-usage.md)
+- [Use this image in **GitLab CI**](https://github.com/Neotys-Labs/neoload-web-test-launcher-docker/blob/master/GitLab-usage.md)
+- [Use this image in **AWS CodeBuild**](https://github.com/Neotys-Labs/neoload-web-test-launcher-docker/blob/master/CodeBuild-usage.md)
 
 License
 ---------
