@@ -196,10 +196,10 @@ public class Launch {
         try {
             TestDefinition testDefinition;
             do {
-                Thread.currentThread().sleep(5000);
+                Thread.sleep(5000);
                 testDefinition = resultsApi.getTest(testId);
                 if(!knownStatuses.contains(testDefinition.getStatus())) {
-                    if(knownStatuses.size()>0 && knownStatuses.get(knownStatuses.size()-1).equals(TestDefinition.StatusEnum.RUNNING)) {
+                    if(!knownStatuses.isEmpty() && knownStatuses.get(knownStatuses.size()-1).equals(TestDefinition.StatusEnum.RUNNING)) {
                         System.out.println();
                     }
                     knownStatuses.add(testDefinition.getStatus());
@@ -242,8 +242,8 @@ public class Launch {
             proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(address.getHost(), address.getPort()));
             String userInfo = address.getUserInfo();
             if(userInfo!=null && userInfo.contains(":")) {
-                final String login = userInfo.substring(0, userInfo.indexOf(":"));
-                final String password = userInfo.substring(userInfo.indexOf(":"));
+                final String login = userInfo.substring(0, userInfo.indexOf(':'));
+                final String password = userInfo.substring(userInfo.indexOf(':'));
                 Authenticator.setDefault(
                         new Authenticator() {
                             @Override
