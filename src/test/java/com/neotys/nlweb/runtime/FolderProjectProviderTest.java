@@ -22,12 +22,13 @@ public class FolderProjectProviderTest {
     public void getProjectFileNameWithZipTest() throws IOException {
         Path tempDir = java.nio.file.Files.createTempDirectory("nlwebtestlaunchertests");
         String sysTmpDir = System.getProperty("java.io.tmpdir");
+        if(!sysTmpDir.endsWith(File.separator)) sysTmpDir+=File.separator;
         tempDir.toFile().deleteOnExit();
         File nlpFile = tempDir.resolve("test.nlp").toFile();
         nlpFile.createNewFile();
         nlpFile.deleteOnExit();
         Assertions.assertThat(FolderProjectProvider.of(nlpFile.getParentFile().getAbsolutePath()).getProjectPath().toString()).isEqualTo(sysTmpDir+"project.zip");
-        Assertions.assertThat(new File(sysTmpDir+File.separator+"project.zip")).exists();
+        Assertions.assertThat(new File(sysTmpDir+"project.zip")).exists();
         File nlpFile2 = tempDir.resolve("test2.nlp").toFile();
         nlpFile2.createNewFile();
         nlpFile2.deleteOnExit();
