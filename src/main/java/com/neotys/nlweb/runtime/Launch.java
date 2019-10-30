@@ -26,7 +26,7 @@ public class Launch {
     static final String ENV_PROJECT_URL = "NEOLOAD_PROJECT_URL";
     static final String ENV_CONTROLLER_ZONE = "CONTROLLER_ZONE_ID";
     static final String ENV_LG_ZONES = "LG_ZONE_IDS";
-    static final String ENV_TEST_NAME = "TEST_NAME";
+    static final String ENV_TEST_RESULT_NAME = "TEST_RESULT_NAME";
     static final String ENV_SCENARIO_NAME = "SCENARIO_NAME";
     static final String ENV_API_URL = "NEOLOADWEB_API_URL";
     static final String ENV_FILES_API_URL = "NEOLOADWEB_FILES_API_URL";
@@ -87,7 +87,7 @@ public class Launch {
 
     @VisibleForTesting
     static String getTestName() {
-        return Optional.ofNullable(System.getenv(ENV_TEST_NAME)).orElse("myTest");
+        return Optional.ofNullable(System.getenv(ENV_TEST_RESULT_NAME)).orElse("myTest");
     }
 
     @VisibleForTesting

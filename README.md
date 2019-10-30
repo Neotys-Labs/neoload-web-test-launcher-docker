@@ -8,6 +8,11 @@ start a test using the NeoLoad project, stored in the */neoload-project* folder,
 The container will wait until the end of the test and return the test quality status as the return code (0 if the test 
 status is PASSED, 1 otherwise).
 
+The */neoload-project* folder can contains:
+ * A NeoLoad project folder including <project>.nlp, config.zip ...
+ * A single zip file containing the NeoLoad project
+ * A single yaml file containing the NeoLoad project as code
+
 Usage
 =====
 ### Using a volume mapping
@@ -16,7 +21,7 @@ Usage
             -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
             -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
             -e NEOLOADWEB_TOKEN={nlweb-token} \
-            -e TEST_NAME={test-name} \
+            -e TEST_RESULT_NAME={test-result-name} \
             -e SCENARIO_NAME={scenario-name} \
             -e CONTROLLER_ZONE_ID={controller-zone} \
             -e LG_ZONE_IDS={lg-zones:lg-number} \
@@ -28,7 +33,7 @@ Usage
             -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
             -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
             -e NEOLOADWEB_TOKEN={nlweb-token} \
-            -e TEST_NAME={test-name} \
+            -e TEST_RESULT_NAME={test-result-name} \
             -e SCENARIO_NAME={scenario-name} \
             -e CONTROLLER_ZONE_ID={controller-zone} \
             -e LG_ZONE_IDS={lg-zones:lg-number} \

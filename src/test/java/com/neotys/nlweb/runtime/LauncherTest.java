@@ -68,7 +68,7 @@ public class LauncherTest {
     @Test
     public void getTestNameTest() throws Exception {
         Assertions.assertThat(Launch.getTestName()).isEqualTo("myTest");
-        setEnv(Launch.ENV_TEST_NAME, "my-test-name");
+        setEnv(Launch.ENV_TEST_RESULT_NAME, "my-test-name");
         Assertions.assertThat(Launch.getTestName()).isEqualTo("my-test-name");
     }
 
