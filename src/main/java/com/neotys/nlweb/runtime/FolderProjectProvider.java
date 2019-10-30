@@ -33,6 +33,8 @@ public class FolderProjectProvider implements ProjectProvider {
             System.err.println("Project folder must be a folder");
             return null;
         }
+        String tmpdir = System.getProperty("java.io.tmpdir");
+        if(tmpdir==null) tmpdir="/tmp";
         String[] listProjectFiles = projectFile.list();
         if(listProjectFiles==null || listProjectFiles.length==0) throw new IllegalArgumentException("Project folder must exist and must contains a NeoLoad project or YAML project definition.");
         // First look for a .nlp file. If found, zip and and return this zip
@@ -41,13 +43,13 @@ public class FolderProjectProvider implements ProjectProvider {
             try {
                 ZipParameters parameters = new ZipParameters();
                 parameters.setIncludeRootFolder(false);
-                new ZipFile(this.folder+File.separator+"project.zip").addFolder(new File(this.folder), parameters);
+                new ZipFile(tmpdir+File.separator+"project.zip").addFolder(new File(this.folder), parameters);
             }catch(ZipException e) {
                 System.err.println("Error zipping the project");
                 e.printStackTrace(System.err);
                 return null;
             }
-            return Path.of(folder,"project.zip");
+            return Path.of(tmpdir,"project.zip");
         }
         if(numberOfNlp>1) {
             System.err.println("More than one NeoLoad project .zip file found");

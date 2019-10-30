@@ -31,15 +31,27 @@ public class LauncherTest {
     @Test
     public void getNlwebApiURLTest() throws Exception {
         Assertions.assertThat(Launch.getNlwebApiURL()).isEqualTo("https://neoload-api.saas.neotys.com/v1");
-        setEnv(Launch.ENV_API_URL, "http://myhost:9050/v1");
+        setEnv(Launch.ENV_API_URL, "http://myhost:9050");
         Assertions.assertThat(Launch.getNlwebApiURL()).isEqualTo("http://myhost:9050/v1");
+        setEnv(Launch.ENV_API_URL, "http://myhost:9050/");
+        Assertions.assertThat(Launch.getNlwebApiURL()).isEqualTo("http://myhost:9050/v1");
+        setEnv(Launch.ENV_API_URL, "http://myhost:9050/myPath");
+        Assertions.assertThat(Launch.getNlwebApiURL()).isEqualTo("http://myhost:9050/myPath/v1");
+        setEnv(Launch.ENV_API_URL, "http://myhost:9050/myPath/");
+        Assertions.assertThat(Launch.getNlwebApiURL()).isEqualTo("http://myhost:9050/myPath/v1");
     }
 
     @Test
     public void getNlwebFilesApiURLTest() throws Exception {
         Assertions.assertThat(Launch.getNlwebFilesApiURL()).isEqualTo("https://neoload-files.saas.neotys.com/v1");
-        setEnv(Launch.ENV_FILES_API_URL, "http://myhostfiles:9050/v1");
+        setEnv(Launch.ENV_FILES_API_URL, "http://myhostfiles:9050");
         Assertions.assertThat(Launch.getNlwebFilesApiURL()).isEqualTo("http://myhostfiles:9050/v1");
+        setEnv(Launch.ENV_FILES_API_URL, "http://myhostfiles:9050/");
+        Assertions.assertThat(Launch.getNlwebFilesApiURL()).isEqualTo("http://myhostfiles:9050/v1");
+        setEnv(Launch.ENV_FILES_API_URL, "http://myhostfiles:9050/mypath");
+        Assertions.assertThat(Launch.getNlwebFilesApiURL()).isEqualTo("http://myhostfiles:9050/mypath/v1");
+        setEnv(Launch.ENV_FILES_API_URL, "http://myhostfiles:9050/mypath/");
+        Assertions.assertThat(Launch.getNlwebFilesApiURL()).isEqualTo("http://myhostfiles:9050/mypath/v1");
     }
 
     @Test

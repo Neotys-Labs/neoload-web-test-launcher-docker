@@ -62,12 +62,12 @@ public class Launch {
 
     @VisibleForTesting
     static String getNlwebApiURL() {
-        return Optional.ofNullable(System.getenv(ENV_API_URL)).orElse("https://neoload-api.saas.neotys.com/v1");
+        return Optional.ofNullable(System.getenv(ENV_API_URL)).map(s -> s.endsWith("/")?s+"v1":s+"/v1").orElse("https://neoload-api.saas.neotys.com/v1");
     }
 
     @VisibleForTesting
     static String getNlwebFilesApiURL() {
-        return Optional.ofNullable(System.getenv(ENV_FILES_API_URL)).orElse("https://neoload-files.saas.neotys.com/v1");
+        return Optional.ofNullable(System.getenv(ENV_FILES_API_URL)).map(s -> s.endsWith("/")?s+"v1":s+"/v1").orElse("https://neoload-files.saas.neotys.com/v1");
     }
 
     @VisibleForTesting
