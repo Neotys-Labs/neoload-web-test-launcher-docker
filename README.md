@@ -16,7 +16,7 @@ The */neoload-project* folder can contains:
 Usage
 =====
 ### Using a volume mapping
-    docker run -d --rm \
+    docker run --rm \
             -v /localpath/myProject:/neoload-project
             -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
             -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
@@ -28,7 +28,7 @@ Usage
             neotys/neoload-web-test-launcher
             
 ### Using project URL
-    docker run -d --rm \
+    docker run --rm \
             -e NEOLOAD_PROJECT_URL={url-to-project-zip}
             -e NEOLOADWEB_API_URL={nlweb-onpremise-apiurl:port} \
             -e NEOLOADWEB_FILES_API_URL= {nlweb-onpremise-file-apiurl:port}\
