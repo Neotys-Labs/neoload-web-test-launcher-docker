@@ -10,6 +10,7 @@ import io.swagger.client.model.ProjectDefinition;
 import io.swagger.client.model.RunTestDefinition;
 import io.swagger.client.model.TestDefinition;
 
+import javax.swing.text.html.Option;
 import java.net.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class Launch {
 
     static final String ENV_TOKEN = "NEOLOADWEB_TOKEN";
     static final String ENV_PROJECT_URL = "NEOLOAD_PROJECT_URL";
+    static final String RESERVATION_ID = "RESERVATION_ID";
+    static final String RESERVATION_DURATION = "RESERVATION_DURATION";
+    static final String RESERVATION_WEB_VUS = "RESERVATION_WEB_VUS";
+    static final String RESERVATION_SAP_VUS = "RESERVATION_SAP_VUS";
     static final String ENV_CONTROLLER_ZONE = "CONTROLLER_ZONE_ID";
     static final String ENV_LG_ZONES = "LG_ZONE_IDS";
     static final String ENV_TEST_RESULT_NAME = "TEST_RESULT_NAME";
@@ -81,6 +86,24 @@ public class Launch {
     }
 
     @VisibleForTesting
+    public static String getReservationId() { return System.getenv(RESERVATION_ID); }
+
+    @VisibleForTesting
+    public static Long getReservationDuration() {
+        return Optional.ofNullable(System.getenv(RESERVATION_DURATION)).map(duration -> Long.valueOf(duration)).orElse(null);
+    }
+
+    @VisibleForTesting
+    public static Integer getReservationWebVus() {
+        return Optional.ofNullable(System.getenv(RESERVATION_WEB_VUS)).map(resaWebVu -> Integer.valueOf(resaWebVu)).orElse(0);
+    }
+
+    @VisibleForTesting
+    public static Integer getReservationSapVus() {
+        return Optional.ofNullable(System.getenv(RESERVATION_SAP_VUS)).map(resaSapVu -> Integer.valueOf(resaSapVu)).orElse(0);
+    }
+
+    @VisibleForTesting
     static String getLgsZoneId() {
         return System.getenv(ENV_LG_ZONES);
     }
@@ -109,6 +132,33 @@ public class Launch {
         if(Strings.isNullOrEmpty(getToken())) {
             System.err.println("Token not defined");
             throw new IllegalArgumentException("API Token is not defined. please fill the \""+ENV_TOKEN+"\" ENV variable.");
+        }
+
+        if (!Strings.isNullOrEmpty(System.getenv(RESERVATION_DURATION))) {
+            try {
+                getReservationDuration();
+            } catch (NumberFormatException e) {
+                System.err.println("Reservation duration is not an integer");
+                throw new IllegalArgumentException("Reservation duration should be an integer. please verify the \"" + RESERVATION_DURATION + "\" ENV variable.");
+            }
+        }
+
+        if (!Strings.isNullOrEmpty(System.getenv(RESERVATION_WEB_VUS))) {
+            try {
+                getReservationWebVus();
+            } catch (NumberFormatException e) {
+                System.err.println("Reservation WEB VUs number is not an integer");
+                throw new IllegalArgumentException("Reservation WEB VUs number should be an integer. please verify the \"" + RESERVATION_WEB_VUS + "\" ENV variable.");
+            }
+        }
+
+        if (!Strings.isNullOrEmpty(System.getenv(RESERVATION_SAP_VUS))) {
+            try {
+                getReservationSapVus();
+            } catch (NumberFormatException e) {
+                System.err.println("Reservation SAP VUs number is not an integer");
+                throw new IllegalArgumentException("Reservation SAP VUs number should be an integer. please verify the \"" + RESERVATION_SAP_VUS + "\" ENV variable.");
+            }
         }
 
         if(Strings.isNullOrEmpty(getControllerZoneId())) {
@@ -173,10 +223,10 @@ public class Launch {
                     scenarioName,
                     "",
                     null,
-                    null,
-                    null,
-                    0,
-                    0,
+                    getReservationId(),
+                    getReservationDuration(),
+                    getReservationWebVus(),
+                    getReservationSapVus(),
                     getControllerZoneId(),
                     getLgsZoneId());
             System.out.println("Test launched with id: "+runTestDefinition.getTestId());

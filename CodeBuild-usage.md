@@ -30,6 +30,10 @@ phases:
         -e SCENARIO_NAME=smoke-test 
         -e NEOLOADWEB_TOKEN=<Your Token> 
         -e TEST_NAME=CI-smoke 
+        -e RESERVATION_ID=<ReservationId>
+        -e RESERVATION_DURATION=<ReservationDuration>
+        -e RESERVATION_WEB_VUS=<ReservationNumberOfWebVUs>
+        -e RESERVATION_SAP_VUS=<ReservationNumberOfSapVUs>
         -e CONTROLLER_ZONE_ID=<Your ZoneID> 
         -e LG_ZONE_IDS=<ZoneID#1>:<LG count#1>, <ZoneID#2>:<LG count#2> 
         neotys/neoload-web-test-launcher:latest
