@@ -104,6 +104,38 @@ public class LauncherTest {
 
     }
 
+    @Test
+    public void getReservationIdTest() throws Exception {
+        clearEnv();
+        Assertions.assertThat(Launch.getReservationId()).isNull();
+        setEnv(Launch.RESERVATION_ID, "my-reservation-id");
+        Assertions.assertThat(Launch.getReservationId()).isEqualTo("my-reservation-id");
+    }
+
+    @Test
+    public void getReservationDurationTest() throws Exception {
+        clearEnv();
+        Assertions.assertThat(Launch.getReservationDuration()).isNull();
+        setEnv(Launch.RESERVATION_DURATION, "12345678910");
+        Assertions.assertThat(Launch.getReservationDuration()).isEqualTo(12345678910L);
+    }
+
+    @Test
+    public void getReservationWebVusTest() throws Exception {
+        clearEnv();
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_WEB_VUS, "50");
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(50);
+    }
+
+    @Test
+    public void getReservationSapVusTest() throws Exception {
+        clearEnv();
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_SAP_VUS, "50");
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(50);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateEnvParameterTokenFailTest() throws Exception {
         clearEnv();
@@ -128,10 +160,37 @@ public class LauncherTest {
         Launch.validateEnvParameters();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationDurationFailTest() throws Exception {
+        clearEnv();
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_DURATION, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationWebVuFailTest() throws Exception {
+        clearEnv();
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_WEB_VUS, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationSapVuFailTest() throws Exception {
+        clearEnv();
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_SAP_VUS, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
     @Test
     public void validateEnvParameterSuccessTest() throws Exception {
         clearEnv();
         setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_DURATION, "123");
+        setEnv(Launch.RESERVATION_WEB_VUS, "456");
+        setEnv(Launch.RESERVATION_SAP_VUS, "789");
         setEnv(Launch.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launch.ENV_LG_ZONES, "something");
         Launch.validateEnvParameters();
