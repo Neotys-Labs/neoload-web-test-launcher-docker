@@ -10,7 +10,6 @@ import io.swagger.client.model.ProjectDefinition;
 import io.swagger.client.model.RunTestDefinition;
 import io.swagger.client.model.TestDefinition;
 
-import javax.swing.text.html.Option;
 import java.net.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -86,21 +85,30 @@ public class Launch {
     }
 
     @VisibleForTesting
-    public static String getReservationId() { return System.getenv(RESERVATION_ID); }
+    static String getReservationId() { return System.getenv(RESERVATION_ID); }
 
     @VisibleForTesting
-    public static Long getReservationDuration() {
-        return Optional.ofNullable(System.getenv(RESERVATION_DURATION)).map(duration -> Long.valueOf(duration)).orElse(null);
+    static Long getReservationDuration() {
+        return Optional
+                .ofNullable(System.getenv(RESERVATION_DURATION))
+                .map(duration -> Strings.isNullOrEmpty(duration) ? null : Long.parseLong(duration))
+                .orElse(null);
     }
 
     @VisibleForTesting
-    public static Integer getReservationWebVus() {
-        return Optional.ofNullable(System.getenv(RESERVATION_WEB_VUS)).map(resaWebVu -> Integer.valueOf(resaWebVu)).orElse(0);
+    static Integer getReservationWebVus() {
+        return Optional
+                .ofNullable(System.getenv(RESERVATION_WEB_VUS))
+                .map(resaWebVu -> Strings.isNullOrEmpty(resaWebVu) ? 0 : Integer.parseInt(resaWebVu))
+                .orElse(0);
     }
 
     @VisibleForTesting
-    public static Integer getReservationSapVus() {
-        return Optional.ofNullable(System.getenv(RESERVATION_SAP_VUS)).map(resaSapVu -> Integer.valueOf(resaSapVu)).orElse(0);
+    static Integer getReservationSapVus() {
+        return Optional
+                .ofNullable(System.getenv(RESERVATION_SAP_VUS))
+                .map(resaSapVu -> Strings.isNullOrEmpty(resaSapVu) ? 0 : Integer.parseInt(resaSapVu))
+                .orElse(0);
     }
 
     @VisibleForTesting

@@ -120,6 +120,8 @@ public class LauncherTest {
     @Test
     public void getReservationDurationTest() throws Exception {
         Assertions.assertThat(Launch.getReservationDuration()).isNull();
+        setEnv(Launch.RESERVATION_DURATION, "");
+        Assertions.assertThat(Launch.getReservationDuration()).isNull();
         setEnv(Launch.RESERVATION_DURATION, "12345678910");
         Assertions.assertThat(Launch.getReservationDuration()).isEqualTo(12345678910L);
     }
@@ -127,12 +129,16 @@ public class LauncherTest {
     @Test
     public void getReservationWebVusTest() throws Exception {
         Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_WEB_VUS, "");
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(0);
         setEnv(Launch.RESERVATION_WEB_VUS, "50");
         Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(50);
     }
 
     @Test
     public void getReservationSapVusTest() throws Exception {
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_SAP_VUS, "");
         Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(0);
         setEnv(Launch.RESERVATION_SAP_VUS, "50");
         Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(50);
