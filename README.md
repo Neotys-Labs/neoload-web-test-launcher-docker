@@ -74,6 +74,7 @@ Insert parameters:
 ### Use this image in a CI environment
 - [Use this image in **GitLab CI**](https://github.com/Neotys-Labs/neoload-web-test-launcher-docker/blob/master/GitLab-usage.md)
 - [Use this image in **AWS CodeBuild**](https://github.com/Neotys-Labs/neoload-web-test-launcher-docker/blob/master/CodeBuild-usage.md)
+- [Use this image in **Azure DevOps Pipelines**](https://github.com/Neotys-Labs/neoload-web-test-launcher-docker/blob/master/AzureDevops-usage.md)
 
 License
 ---------
