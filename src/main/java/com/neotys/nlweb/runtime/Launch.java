@@ -19,7 +19,7 @@ import java.util.Optional;
 public class Launch {
 
 
-    static final String PROJECT_FOLDER = "/neoload-project";
+    static final String PROJECT_FOLDER = "/Users/bderouet/Neotys/workspace-integrations/codepipeline-test/neoload-project/Archive";
     static final String RESULT_FOLDER = "/neoload-result";
 
     static final String ENV_TOKEN = "NEOLOADWEB_TOKEN";

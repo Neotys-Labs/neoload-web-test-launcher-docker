@@ -28,7 +28,7 @@ public class FolderProjectProvider implements ProjectProvider {
     }
 
     public Path getProjectPath() {
-        File projectFile = new File(this.folder);
+        final File projectFile = new File(this.folder);
         if(!projectFile.isDirectory()) {
             System.err.println("Project folder must be a folder");
             return null;
@@ -58,7 +58,7 @@ public class FolderProjectProvider implements ProjectProvider {
         // Then look if there is a single Zip in the folder, if yes, return this single zip as to zipped project to use
         long numberOfZip = Arrays.stream(listProjectFiles).filter(s -> s.toLowerCase().endsWith(".zip")).count();
         if(numberOfZip==1) {
-            return Path.of(Arrays.stream(listProjectFiles).filter(s -> s.toLowerCase().endsWith(".zip")).findFirst().get());
+            return Path.of(projectFile.getAbsolutePath(), Arrays.stream(listProjectFiles).filter(s -> s.toLowerCase().endsWith(".zip")).findFirst().get());
         }
         // Then look if there is a single yaml file in the folder, if yes, return this single yaml as the as code project to use
         if(numberOfZip>1) {

@@ -19,7 +19,7 @@ public class FolderProjectProviderTest {
     }
 
     @Test
-    public void getProjectFileNameWithZipTest() throws IOException {
+    public void getProjectFileNameWithNlpTest() throws IOException {
         Path tempDir = java.nio.file.Files.createTempDirectory("nlwebtestlaunchertests");
         String sysTmpDir = System.getProperty("java.io.tmpdir");
         if(!sysTmpDir.endsWith(File.separator)) sysTmpDir+=File.separator;
@@ -35,6 +35,21 @@ public class FolderProjectProviderTest {
         Assertions.assertThat(FolderProjectProvider.of(nlpFile.getParentFile().getAbsolutePath()).getProjectPath()).isNull();
         nlpFile.delete();
         nlpFile2.delete();
+        tempDir.toFile().delete();
+    }
+
+
+    @Test
+    public void getProjectFileNameWithZipTest() throws IOException {
+        Path tempDir = java.nio.file.Files.createTempDirectory("nlwebtestlaunchertests");
+        String sysTmpDir = System.getProperty("java.io.tmpdir");
+        if(!sysTmpDir.endsWith(File.separator)) sysTmpDir+=File.separator;
+        tempDir.toFile().deleteOnExit();
+        File zipFile = tempDir.resolve("test.zip").toFile();
+        zipFile.createNewFile();
+        zipFile.deleteOnExit();
+        Assertions.assertThat(FolderProjectProvider.of(zipFile.getParentFile().getAbsolutePath()).getProjectPath().toString()).isEqualTo(tempDir+File.separator+"test.zip");
+        zipFile.delete();
         tempDir.toFile().delete();
     }
 
