@@ -19,6 +19,7 @@
         <assertj-version>3.11.1</assertj-version>
         <mockito-version>2.28.2</mockito-version>
         <http-client-mock-version>1.0.0</http-client-mock-version>
+        <powermock.version>2.0.4</powermock.version>
     </properties>
 
     <dependencies>
@@ -60,6 +61,18 @@
             <groupId>com.pgs-soft</groupId>
             <artifactId>HttpClientMock</artifactId>
             <version>${http-client-mock-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

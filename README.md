@@ -38,6 +38,21 @@ Usage
             -e CONTROLLER_ZONE_ID={controller-zone} \
             -e LG_ZONE_IDS={lg-zones:lg-number} \
             neotys/neoload-web-test-launcher
+            
+### Additional parameters to handle reservations
+
+#### Launching in the context of a given reservation
+
+Insert parameter:
+
+    -e RESERVATION_ID={reservation-id} \
+    
+#### Launching with an auto-reservation
+
+Insert parameters:
+
+    -e RESERVATION_DURATION={reservation-duration} \
+    -e RESERVATION_WEB_VUS={reservation-web-vus} \
 
 ### Parameters
 | Env | Comment | Example |
@@ -49,6 +64,10 @@ Usage
 | NEOLOADWEB_PROXY (Optional) | The proxy URL to access NeoLoad Web | http://login:password@myproxy |
 | TEST_RESULT_NAME | The name of the test result. | MyProject non regression test |
 | SCENARIO_NAME (Optional) | The scenario name to launch as it appear in the NeoLoad project. This parameter is optional if only one scenario exist in the project. | MyLargeScenario |
+| RESERVATION_ID (Optional) | The reservation identifier. | 1a73af8d-7222-41ca-b5b4-995e1a4a5175 |
+| RESERVATION_DURATION (Optional) | The duration of the reservation for the test (in seconds). | 1200 |
+| RESERVATION_WEB_VUS (Optional) | The number of Web Virtual Users to be reserved for the test. | 50 |
+| RESERVATION_SAP_VUS (Optional) | The number of SAP Virtual Users to be reserved for the test.| 0 |
 | CONTROLLER_ZONE_ID | The controller zone Id. | ZoneId |
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
 

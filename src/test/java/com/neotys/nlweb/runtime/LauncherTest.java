@@ -7,18 +7,23 @@ import io.swagger.client.model.ProjectDefinition;
 import io.swagger.client.model.RunTestDefinition;
 import io.swagger.client.model.ScenarioDefinition;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
-import static  org.mockito.Mockito.*;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
 
+import static org.mockito.Mockito.*;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Launch.class})
 public class LauncherTest {
 
     @Test
@@ -26,7 +31,10 @@ public class LauncherTest {
 
     }
 
-
+    @Before
+    public void setUp() {
+        PowerMockito.mockStatic(System.class);
+    }
 
     @Test
     public void getNlwebApiURLTest() throws Exception {
@@ -56,7 +64,6 @@ public class LauncherTest {
 
     @Test
     public void getTokenTest() throws Exception {
-        clearEnv();
         Assertions.assertThat(Launch.getToken()).isNull();
         setEnv(Launch.ENV_TOKEN, "my-nlweb-token");
         Assertions.assertThat(Launch.getToken()).isEqualTo("my-nlweb-token");
@@ -71,7 +78,6 @@ public class LauncherTest {
 
     @Test
     public void getLGZoneIdsTest() throws Exception {
-        clearEnv();
         Assertions.assertThat(Launch.getLgsZoneId()).isNull();
         setEnv(Launch.ENV_LG_ZONES, "my-lg-zones");
         Assertions.assertThat(Launch.getLgsZoneId()).isEqualTo("my-lg-zones");
@@ -104,9 +110,42 @@ public class LauncherTest {
 
     }
 
+    @Test
+    public void getReservationIdTest() throws Exception {
+        Assertions.assertThat(Launch.getReservationId()).isNull();
+        setEnv(Launch.RESERVATION_ID, "my-reservation-id");
+        Assertions.assertThat(Launch.getReservationId()).isEqualTo("my-reservation-id");
+    }
+
+    @Test
+    public void getReservationDurationTest() throws Exception {
+        Assertions.assertThat(Launch.getReservationDuration()).isNull();
+        setEnv(Launch.RESERVATION_DURATION, "");
+        Assertions.assertThat(Launch.getReservationDuration()).isNull();
+        setEnv(Launch.RESERVATION_DURATION, "12345678910");
+        Assertions.assertThat(Launch.getReservationDuration()).isEqualTo(12345678910L);
+    }
+
+    @Test
+    public void getReservationWebVusTest() throws Exception {
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_WEB_VUS, "");
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_WEB_VUS, "50");
+        Assertions.assertThat(Launch.getReservationWebVus()).isEqualTo(50);
+    }
+
+    @Test
+    public void getReservationSapVusTest() throws Exception {
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_SAP_VUS, "");
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(0);
+        setEnv(Launch.RESERVATION_SAP_VUS, "50");
+        Assertions.assertThat(Launch.getReservationSapVus()).isEqualTo(50);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void validateEnvParameterTokenFailTest() throws Exception {
-        clearEnv();
         setEnv(Launch.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launch.ENV_LG_ZONES, "something");
         Launch.validateEnvParameters();
@@ -114,7 +153,6 @@ public class LauncherTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void validateEnvParameterControllerZoneFailTest() throws Exception {
-        clearEnv();
         setEnv(Launch.ENV_TOKEN, "something");
         setEnv(Launch.ENV_LG_ZONES, "something");
         Launch.validateEnvParameters();
@@ -122,16 +160,38 @@ public class LauncherTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void validateEnvParameterLgZonesFailTest() throws Exception {
-        clearEnv();
         setEnv(Launch.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launch.ENV_TOKEN, "something");
         Launch.validateEnvParameters();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationDurationFailTest() throws Exception {
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_DURATION, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationWebVuFailTest() throws Exception {
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_WEB_VUS, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void validateEnvParameterReservationSapVuFailTest() throws Exception {
+        setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_SAP_VUS, "not_a_number");
+        Launch.validateEnvParameters();
+    }
+
     @Test
     public void validateEnvParameterSuccessTest() throws Exception {
-        clearEnv();
         setEnv(Launch.ENV_TOKEN, "something");
+        setEnv(Launch.RESERVATION_DURATION, "123");
+        setEnv(Launch.RESERVATION_WEB_VUS, "456");
+        setEnv(Launch.RESERVATION_SAP_VUS, "789");
         setEnv(Launch.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launch.ENV_LG_ZONES, "something");
         Launch.validateEnvParameters();
@@ -149,7 +209,6 @@ public class LauncherTest {
 
     @Test
     public void launchTestTest() throws Exception {
-        clearEnv();
         setEnv(Launch.ENV_TOKEN, "myToken");
         setEnv(Launch.ENV_CONTROLLER_ZONE, "something");
         setEnv(Launch.ENV_LG_ZONES, "something");
@@ -199,31 +258,7 @@ public class LauncherTest {
     }
 
 
-    private static void setEnv(String key, String value) throws Exception {
-        Class[] classes = Collections.class.getDeclaredClasses();
-        Map<String, String> env = System.getenv();
-        for(Class cl : classes) {
-            if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
-                Field field = cl.getDeclaredField("m");
-                field.setAccessible(true);
-                Object obj = field.get(env);
-                Map<String, String> map = (Map<String, String>) obj;
-                map.put(key, value);
-            }
-        }
-    }
-
-    private static void clearEnv() throws Exception {
-        Class[] classes = Collections.class.getDeclaredClasses();
-        Map<String, String> env = System.getenv();
-        for(Class cl : classes) {
-            if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
-                Field field = cl.getDeclaredField("m");
-                field.setAccessible(true);
-                Object obj = field.get(env);
-                Map<String, String> map = (Map<String, String>) obj;
-                map.clear();
-            }
-        }
+    private static void setEnv(String key, String value) {
+        PowerMockito.when(System.getenv(key)).thenReturn(value);
     }
 }
