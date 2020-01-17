@@ -35,6 +35,8 @@ public class Launch {
     static final String ENV_API_URL = "NEOLOADWEB_API_URL";
     static final String ENV_FILES_API_URL = "NEOLOADWEB_FILES_API_URL";
     static final String ENV_PROXY = "NEOLOADWEB_PROXY";
+	static final String ENV_AS_CODE_FILES = "AS_CODE_FILES";
+	static final String ENV_TEST_RESULT_DESCRIPTION = "TEST_RESULT_DESCRIPTION";
 
     static final UserMessages userMessages = new UserMessages();
 
@@ -121,7 +123,18 @@ public class Launch {
         return Optional.ofNullable(System.getenv(ENV_TEST_RESULT_NAME)).orElse("myTest");
     }
 
-    @VisibleForTesting
+	@VisibleForTesting
+	static String getTestDescription() {
+		return Optional.ofNullable(System.getenv(ENV_TEST_RESULT_DESCRIPTION)).orElse("");
+	}
+
+	@VisibleForTesting
+	static String getAsCodeFiles() {
+		return System.getenv(ENV_AS_CODE_FILES);
+	}
+
+
+	@VisibleForTesting
     static String getScenarioName(ProjectDefinition projectDefinition) {
         String scenarioName = System.getenv(ENV_SCENARIO_NAME);
         if(scenarioName==null && projectDefinition.getScenarios().size()==1) {
@@ -229,8 +242,8 @@ public class Launch {
             RunTestDefinition runTestDefinition = runtimeApi.getTestsRun(getTestName(),
                     projectDefinition.getProjectId(),
                     scenarioName,
-                    "",
-                    null,
+                    getTestDescription(),
+                    getAsCodeFiles(),
                     getReservationId(),
                     getReservationDuration(),
                     getReservationWebVus(),
