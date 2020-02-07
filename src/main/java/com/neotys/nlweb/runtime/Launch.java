@@ -2,6 +2,7 @@ package com.neotys.nlweb.runtime;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
+import com.squareup.okhttp.OkHttpClient;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.ResultsApi;
@@ -10,8 +11,11 @@ import io.swagger.client.model.ProjectDefinition;
 import io.swagger.client.model.RunTestDefinition;
 import io.swagger.client.model.TestDefinition;
 
+import javax.net.ssl.*;
 import java.net.*;
 import java.nio.file.Path;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +41,7 @@ public class Launch {
     static final String ENV_PROXY = "NEOLOADWEB_PROXY";
 	static final String ENV_AS_CODE_FILES = "AS_CODE_FILES";
 	static final String ENV_TEST_RESULT_DESCRIPTION = "TEST_RESULT_DESCRIPTION";
+	static final String ENV_NO_CHECK_CERTIFICATE = "NO_CHECK_CERTIFICATE";
 
     static final UserMessages userMessages = new UserMessages();
 
@@ -216,21 +221,21 @@ public class Launch {
     static String launchTest(Path projectFile, RuntimeApi runtimeApi) {
         validateEnvParameters();
 
-        setupClientApi(runtimeApi.getApiClient());
+        final ApiClient apiClient = runtimeApi.getApiClient();
+        setupClientApi(apiClient);
 
         try {
-
-            runtimeApi.getApiClient().setBasePath(getNlwebFilesApiURL());
+            apiClient.setBasePath(getNlwebFilesApiURL());
 
             System.out.println("Uploading project");
-            int readTimeout = runtimeApi.getApiClient().getReadTimeout();
-            runtimeApi.getApiClient().setReadTimeout(300000);
-            int writeTimeout = runtimeApi.getApiClient().getWriteTimeout();
-            runtimeApi.getApiClient().setWriteTimeout(60000);
+            int readTimeout = apiClient.getReadTimeout();
+            apiClient.setReadTimeout(300000);
+            int writeTimeout = apiClient.getWriteTimeout();
+            apiClient.setWriteTimeout(60000);
             ProjectDefinition projectDefinition = runtimeApi.postUploadProject(projectFile.toFile());
             System.out.println("Project uploaded");
-            runtimeApi.getApiClient().setReadTimeout(readTimeout);
-            runtimeApi.getApiClient().setWriteTimeout(writeTimeout);
+            apiClient.setReadTimeout(readTimeout);
+            apiClient.setWriteTimeout(writeTimeout);
             String scenarioName = getScenarioName(projectDefinition);
             if(scenarioName==null) {
                 System.err.println("Scenario name is not defined");
@@ -238,7 +243,7 @@ public class Launch {
             }
 
             System.out.println("Starting test");
-            runtimeApi.getApiClient().setBasePath(getNlwebApiURL());
+            apiClient.setBasePath(getNlwebApiURL());
             RunTestDefinition runTestDefinition = runtimeApi.getTestsRun(getTestName(),
                     projectDefinition.getProjectId(),
                     scenarioName,
@@ -294,8 +299,53 @@ public class Launch {
         }
     }
 
+    private static void generateTrustAllSocketFactory(final OkHttpClient httpClient){
+        try {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {new X509ExtendedTrustManager() {
+                @Override
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket)  {
+                }
+
+                @Override
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket)  {
+                }
+
+                @Override
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) {
+                }
+
+                @Override
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) {
+                }
+
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+            };
+
+            // Install the all-trusting trust manager
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            // Create an ssl socket factory with our all-trusting manager
+            httpClient.setSslSocketFactory(sslContext.getSocketFactory());
+        }catch(Throwable th){
+            System.err.println("Warning: cannot trust all certificates");
+            th.printStackTrace(System.err);
+        }
+    }
 
     private static void setupClientApi(ApiClient apiClient) {
+
+        final String noCheckCertificate = System.getenv(ENV_NO_CHECK_CERTIFICATE);
+        if(noCheckCertificate != null &&  noCheckCertificate.toLowerCase().contains("true")) {
+            generateTrustAllSocketFactory(apiClient.getHttpClient());
+        }
         apiClient.setApiKey(getToken());
 
         apiClient.setBasePath(getNlwebApiURL());
