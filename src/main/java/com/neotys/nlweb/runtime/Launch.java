@@ -334,6 +334,12 @@ public class Launch {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             // Create an ssl socket factory with our all-trusting manager
             httpClient.setSslSocketFactory(sslContext.getSocketFactory());
+            httpClient.setHostnameVerifier( new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
         }catch(Throwable th){
             System.err.println("Warning: cannot trust all certificates");
             th.printStackTrace(System.err);
