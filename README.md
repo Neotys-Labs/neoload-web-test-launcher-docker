@@ -72,7 +72,7 @@ Insert parameters:
 | RESERVATION_SAP_VUS (Optional) | The number of SAP Virtual Users to be reserved for the test.| 0 |
 | CONTROLLER_ZONE_ID | The controller zone Id. | ZoneId |
 | LG_ZONE_IDS | The LG zones with the number of the LGs. | ZoneId1:10,ZoneId2:5 |
-| NO_CHECK_CERTIFICATE | Don't check the server certificate against the available certificate authorities. | true |
+| NO_CHECK_CERTIFICATE  (Optional) | Don't check the server certificate against the available certificate authorities. | true |
 
 
 ### Use this image in a CI environment
