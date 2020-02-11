@@ -32,5 +32,5 @@ loadtest:
 > **Note:** This example uses the NeoLoad project stored in your GitLab repository in the "neoload-project/archive" folder.
 If your NeoLoad project is not stored in your GitLab repository, you can use the `NEOLOAD_PROJECT_URL` environment parameter instead of mapping the `"/neoload-project" ` folder.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTg4OTA1NDI2XX0=
+eyJoaXN0b3J5IjpbLTg2NDQ1OTM1NSw5ODg5MDU0MjZdfQ==
 -->
