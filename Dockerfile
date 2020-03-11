@@ -10,6 +10,11 @@ RUN mvn package
 # Step : Package image
 FROM openjdk:11-jre
 
+RUN useradd -ms /bin/bash nlweb
+
+USER nlweb
+WORKDIR /home/nlweb
+
 CMD exec java $JAVA_OPTS -jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
 
 # Add the service itself
