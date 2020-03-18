@@ -19,3 +19,5 @@ CMD exec java $JAVA_OPTS -jar /usr/share/neoload-web-test-launcher/neoload-web-t
 
 # Add the service itself
 COPY --from=target /build/target/neoload-web-test-launcher-docker-?.?.?.jar /usr/share/neoload-web-test-launcher/neoload-web-test-launcher.jar
+
+VOLUME /neoload-project
