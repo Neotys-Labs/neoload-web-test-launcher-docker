@@ -209,12 +209,18 @@ public class Launch {
     }
 
     private static Path getProjectPath() {
-        ProjectProvider projectProvider = getProjectProvider();
-        if (projectProvider == null) {
-            System.err.println("Cannot find a valid project provider");
+        try {
+            ProjectProvider projectProvider = getProjectProvider();
+            if (projectProvider == null) {
+                System.err.println("Cannot find a valid project provider");
+                return null;
+            }
+            return projectProvider.getProjectPath();
+        } catch (Throwable t){
+            System.err.println("Fail to resolve project Path");
+            System.err.println(t);
             return null;
         }
-        return projectProvider.getProjectPath();
     }
 
     @VisibleForTesting
