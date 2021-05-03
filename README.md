@@ -1,3 +1,9 @@
+Deprecation note
+================
+This tool was designed to start Neoload Web tests. It uses the API V1 which is deprecated.
+
+Please use the [neoload CLI python tool on Github](https://github.com/Neotys-Labs/neoload-cli) to configure the test settings, upload the project and start the test. See examples for several common CI environments [on github](https://github.com/guillaumebert/neoload-cli/tree/master/examples/pipelines).
+
 What is NeoLoad?
 ================
 [NeoLoad](http://www.neotys.com/neoload/overview) is a load testing solution developed by [Neotys](http://www.neotys.com). NeoLoad realistically simulates user activity and monitors infrastructure behavior so you can eliminate bottlenecks in all your web and mobile applications.
