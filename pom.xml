@@ -13,7 +13,7 @@
         <junit-version>4.12</junit-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <neoload-web-java-client-version>1.0.0</neoload-web-java-client-version>
-        <zip4j-version>2.1.1</zip4j-version>
+        <zip4j-version>2.11.5</zip4j-version>
         <guava-version>28.0-jre</guava-version>
         <guice.version>4.1.0</guice.version>
         <assertj-version>3.11.1</assertj-version>
